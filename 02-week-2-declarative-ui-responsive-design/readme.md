@@ -7,8 +7,8 @@
 
 | Field    | Detail               |
 |----------|-----------------------|
-| **Nama** | *(isi nama lengkap)* |
-| **NIM**  | *(isi NIM)* |
+| **Nama** | *Sharren Elvaretta Pratamadya Fianto* |
+| **NIM**  | *244107020191* |
 | **Praktikum 1** | profile_warmup |
 | **Praktikum 2** | responsive_dashboard |
 | **Tugas Praktikum** | Pertemuan 2 |
