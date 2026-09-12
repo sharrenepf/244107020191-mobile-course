@@ -168,8 +168,8 @@ Dijalankan dengan `flutter run`, lalu:
 2. Tombol back sistem ditekan → path kembali ke `/`.
 3. Path `/detail/<id>` diakses langsung (tanpa melewati Home) → halaman detail tetap terbuka dengan `id` yang benar, membuktikan sifat deklaratif GoRouter: tampilan ditentukan oleh path saat ini, bukan oleh urutan navigasi yang ditempuh.
 
-| Home Page | Detail Page | Akses Path Langsung |
-|---|---|---|
+| Home Page | Detail Page |
+|---|---|
 | ![Home Page](screenshots/praktikum1_home.png) | ![Detail Page](screenshots/praktikum1_detail.png) | 
 
 ---
