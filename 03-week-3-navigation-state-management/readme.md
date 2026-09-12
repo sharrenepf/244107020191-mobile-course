@@ -21,11 +21,6 @@
 
 **Project:** `week3_navigation`
 
-### Tujuan Visual
-
-![Hasil Run Home dan Detail Page](screenshots/hasil_output_langkah6_navigation.png)
-
----
 
 ### Landasan Konsep
 
@@ -175,19 +170,13 @@ Dijalankan dengan `flutter run`, lalu:
 
 | Home Page | Detail Page | Akses Path Langsung |
 |---|---|---|
-| ![Home Page](screenshots/home_page_langkah6.png) | ![Detail Page](screenshots/detail_page_langkah6.png) | ![Akses Path Langsung](screenshots/direct_path_langkah6.png) |
+| ![Home Page](screenshots/praktikum1_home.png) | ![Detail Page](screenshots/praktikum1_detail.png) | 
 
 ---
 
 ## Praktikum 2: Aplikasi ToDo dengan Riverpod
 
 **Project:** `week3_todo`
-
-### Tujuan Visual
-
-![Hasil Run ToDo Riverpod](screenshots/hasil_output_langkah5_todo.png)
-
----
 
 ### Landasan Konsep
 
@@ -365,19 +354,13 @@ Dijalankan dengan `flutter run`. Tugas ditambahkan lewat dialog, checkbox di-tog
 
 | ToDo Kosong | ToDo Terisi | Checkbox Tercoret |
 |---|---|---|
-| ![ToDo Kosong](screenshots/todo_kosong_langkah5.png) | ![ToDo Terisi](screenshots/todo_terisi_langkah5.png) | ![Checkbox Tercoret](screenshots/todo_checked_langkah5.png) |
+| ![ToDo Kosong](screenshots/praktikum2_todokosong.png) | ![Tugas Di Tambahkan](screenshots/praktikum2_tambahtugas.png) | ![Tugas Selesai Di Kerjakan](screenshots/praktikum2_daftartugas.png) |
 
 ---
 
 ## Praktikum 3: AsyncValue — Loading, Error, Success
 
 **Project:** lanjutan `week3_todo` (atau project terpisah)
-
-### Tujuan Visual
-
-![Hasil Run AsyncValue](screenshots/hasil_output_asyncvalue.png)
-
----
 
 ### Landasan Konsep
 
@@ -476,7 +459,7 @@ class ProductPage extends ConsumerWidget {
 
 Dijalankan dengan `flutter run`. Pada 2 detik pertama setelah `ProductPage` dibuka, `CircularProgressIndicator` tampil di tengah layar sesuai cabang `loading` pada `.when()`.
 
-![Kondisi Loading](screenshots/kondisi_loading_langkah3.png)
+![Kondisi Loading](screenshots/praktikum3_langkah2,2.png)
 
 ---
 
@@ -494,7 +477,7 @@ Future<List<String>> build() async {
 
 Dijalankan ulang — cabang `error` pada `.when()` tampil, menunjukkan pesan `Gagal memuat: Exception: Gagal terhubung ke server` beserta tombol **Coba lagi**. Kode kemudian dikembalikan ke kondisi normal.
 
-![Kondisi Error](screenshots/kondisi_error_langkah4.png)
+![Kondisi Error](screenshots/praktikum3_langkah2.png)
 
 ---
 
@@ -502,9 +485,9 @@ Dijalankan ulang — cabang `error` pada `.when()` tampil, menunjukkan pesan `Ga
 
 Tombol **Coba lagi** ditekan saat kondisi error. `ref.invalidate(productsProvider)` membuat provider dijalankan ulang dari `build()`, sehingga state kembali ke `AsyncLoading()` lalu ke `AsyncData` (jika `build()` sudah dikembalikan ke kondisi normal).
 
-| Loading Ulang Setelah Retry | Success Setelah Retry |
+| Loading Ulang Setelah Retry | Success |
 |---|---|
-| ![Loading Ulang](screenshots/retry_loading_langkah5.png) | ![Success Setelah Retry](screenshots/retry_success_langkah5.png) |
+|![Success](screenshots/praktikum3_langkah3.png) |
 
 ---
 
@@ -546,36 +529,158 @@ Praktikum 1 (GoRouter), Praktikum 2 (ToDo dengan Riverpod), dan Praktikum 3 (Asy
 
 ---
 
-### Tugas 2 — AI Prompt Challenge
 
-**Peran AI pada codelab ini:** AI dipakai sebagai co-developer untuk membantu membuat boilerplate `StatsPage`, tetapi kode tetap wajib dibaca, dijelaskan, diverifikasi, diperbaiki, dan diuji sendiri.
+**Output awal AI:**
 
-**Prompt yang digunakan:**
+`lib/providers/stats_provider.dart`
+```dart
+import 'dart:math';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// AsyncNotifier membungkus state ke dalam AsyncValue<List<String>>
+// (loading/error/data) tanpa perlu boolean flag manual.
+class StatsNotifier extends AsyncNotifier<List<String>> {
+  @override
+  Future<List<String>> build() async {
+    return _fetchStats();
+  }
+
+  // Dipanggil dari tombol "Coba lagi". Set loading dulu supaya UI
+  // langsung menampilkan spinner, lalu guard exception otomatis.
+  Future<void> retry() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() => _fetchStats());
+  }
+
+  // Simulasi network call dengan kemungkinan gagal 30%.
+  Future<List<String>> _fetchStats() async {
+    await Future.delayed(const Duration(seconds: 2));
+    final random = Random();
+    final isFailure = random.nextDouble() < 0.3;
+    if (isFailure) {
+      throw Exception('Gagal mengambil data statistik dari server');
+    }
+    return [
+      'Total pengguna: 1.245',
+      'Total transaksi: 389',
+      'Rata-rata rating: 4.7',
+    ];
+  }
+}
+
+final statsProvider =
+    AsyncNotifierProvider<StatsNotifier, List<String>>(StatsNotifier.new);
 ```
-Buatkan halaman Flutter bernama StatsPage menggunakan flutter_riverpod.
-Requirements:
-- ConsumerWidget dengan satu AsyncNotifierProvider yang mensimulasikan
-  pengambilan data statistik (delay 2 detik, kadang gagal 30%).
-- UI harus menangani loading (spinner), error (pesan + tombol retry),
-  dan success (ListView 3 item).
-- Berikan unit test untuk notifier-nya.
-Jelaskan setiap bagian kode dalam komentar.
+
+`lib/pages/stats_page.dart`
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/stats_provider.dart';
+
+class StatsPage extends ConsumerWidget {
+  const StatsPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final statsAsync = ref.watch(statsProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Statistik')),
+      body: statsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Gagal memuat: $err'),
+              const SizedBox(height: 12),
+              FilledButton(
+                onPressed: () => ref.read(statsProvider.notifier).retry(),
+                child: const Text('Coba lagi'),
+              ),
+            ],
+          ),
+        ),
+        data: (stats) => ListView.builder(
+          itemCount: stats.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: const Icon(Icons.bar_chart),
+            title: Text(stats[index]),
+          ),
+        ),
+      ),
+    );
+  }
+}
 ```
 
-> [Tempelkan output awal AI di sini.]
+`test/stats_provider_test.dart`
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:week3_todo/providers/stats_provider.dart';
+
+void main() {
+  group('StatsNotifier', () {
+    test('build() mengembalikan List<String> berisi 3 item ketika sukses', () async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      AsyncValue<List<String>> result;
+      var attempts = 0;
+      do {
+        result = await container.read(statsProvider.future).then(
+              (data) => AsyncValue.data(data),
+              onError: (e, s) => AsyncValue.error(e, s),
+            );
+        attempts++;
+      } while (result is AsyncError && attempts < 10);
+
+      expect(result, isA<AsyncData<List<String>>>());
+      expect((result as AsyncData).value.length, 3);
+    });
+
+    test('retry() mengubah state ke AsyncLoading lalu ke hasil baru', () async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await container.read(statsProvider.future).catchError((_) => <String>[]);
+
+      final notifier = container.read(statsProvider.notifier);
+      final future = notifier.retry();
+
+      expect(container.read(statsProvider), isA<AsyncLoading>());
+
+      await future;
+
+      final finalState = container.read(statsProvider);
+      expect(finalState is AsyncData || finalState is AsyncError, true);
+    });
+  });
+}
+```
 
 **AI Verification Checklist:**
 
-- [ ] State diubah secara immutable (tidak ada `state.add()` atau mutasi list langsung).
-- [ ] `ref.watch` hanya dipakai di dalam `build`, dan `ref.read` di callback.
-- [ ] Ketiga state `AsyncValue` (loading, error, success) benar-benar ditangani, bukan hanya success.
-- [ ] Provider dideklarasikan dengan tipe eksplisit dan tidak duplikat dengan provider lain.
-- [ ] Kode AI tidak memakai API Riverpod versi lama (`StateProvider` antipattern, `StateNotifierProvider` usang, atau `Consumer` bertingkat yang tidak perlu). Jika ada, diperbaiki ke pola `Notifier`/`ConsumerWidget`.
+- [x] State diubah secara immutable (tidak ada `state.add()` atau mutasi list langsung).
+  Aman — `_fetchStats()` selalu mengembalikan list baru, tidak ada method yang memutasi list yang sudah ada.
+- [x] `ref.watch` hanya dipakai di dalam `build`, dan `ref.read` di callback.
+  Sesuai — `ref.watch(statsProvider)` dipanggil di dalam `build()`, sedangkan `ref.read(statsProvider.notifier).retry()` dipanggil di `onPressed`.
+- [x] Ketiga state `AsyncValue` (loading, error, success) benar-benar ditangani, bukan hanya success.
+  Sesuai — `.when()` mewajibkan ketiga cabang (`loading`, `error`, `data`) diisi.
+- [x] Provider dideklarasikan dengan tipe eksplisit dan tidak duplikat dengan provider lain.
+  Sesuai — `AsyncNotifierProvider<StatsNotifier, List<String>>`, tidak tumpang tindih dengan `todoListProvider`/`productsProvider` yang sudah ada.
+- [x] Kode AI tidak memakai API Riverpod versi lama (`StateProvider` antipattern, `StateNotifierProvider` usang, atau `Consumer` bertingkat yang tidak perlu).
+  Tidak ditemukan — langsung memakai `AsyncNotifier` + `AsyncNotifierProvider` (pola modern).
 - [ ] `flutter analyze` dan `flutter test` lolos tanpa warning pada hasil AI.
+  [Isi setelah dijalankan sendiri, tempel hasil/screenshot di sini.]
 
-> [Catat temuan verifikasi, perbaikan yang dilakukan pada kode AI, dan alasannya di sini. Simpan prompt, output awal AI, perbaikan, dan hasil testing pada folder `docs/`.]
+**Temuan & perbaikan yang dilakukan:**
 
-![Hasil StatsPage dan Unit Test dari AI](screenshots/ai_statspage_hasil.png)
+Unit test awal AI memakai `Random()` langsung di dalam `StatsNotifier` untuk simulasi gagal 30%, sehingga hasil test tidak deterministik — bisa lolos atau gagal secara acak setiap kali dijalankan. Diperbaiki dengan meng-inject nilai `failureRate` lewat constructor `StatsNotifier`, sehingga saat testing kondisi sukses/gagal bisa dipaksa konsisten tanpa bergantung pada angka random.
+
+Dibandingkan pola `ref.invalidate(productsProvider)` di Praktikum 3, `StatsNotifier` memakai method `retry()` internal dengan `AsyncValue.guard` — dipilih karena logikanya (set `AsyncLoading` lalu guard fetch ulang) lebih eksplisit dan mudah diuji langsung lewat `ProviderContainer` tanpa perlu trigger dari widget.
 
 ---
 
@@ -583,9 +688,115 @@ Jelaskan setiap bagian kode dalam komentar.
 
 Refactoring yang dilakukan pada aplikasi ToDo:
 
-- [ ] Widget bar ToDo dipisah menjadi `TodoTile` tersendiri agar `build` lebih pendek dan mudah diuji.
-- [ ] Logika filter (misalnya tampilkan hanya yang belum selesai) diekstrak menjadi Provider turunan yang membaca `todoListProvider`.
-- [ ] Aplikasi ToDo diintegrasikan dengan GoRouter: `/` untuk daftar dan `/stats` untuk halaman statistik, dengan `NavigationBar` untuk berpindah.
+- [x] Widget bar ToDo dipisah menjadi `TodoTile` tersendiri agar `build` lebih pendek dan mudah diuji.
+- [x] Logika filter (menampilkan hanya yang belum selesai) diekstrak menjadi Provider turunan yang membaca `todoListProvider`.
+- [x] Aplikasi ToDo diintegrasikan dengan GoRouter: `/` untuk daftar dan `/stats` untuk halaman statistik, dengan `NavigationBar` untuk berpindah.
+
+**1. `TodoTile` (`lib/widgets/todo_tile.dart`):**
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/todo_provider.dart';
+
+// Dipisah dari TodoPage agar build() TodoPage lebih pendek
+// dan TodoTile bisa diuji/di-preview terpisah.
+class TodoTile extends ConsumerWidget {
+  const TodoTile({super.key, required this.todo, required this.index});
+
+  final Todo todo;
+  final int index;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListTile(
+      leading: Checkbox(
+        value: todo.done,
+        onChanged: (_) => ref.read(todoListProvider.notifier).toggle(index),
+      ),
+      title: Text(
+        todo.title,
+        style: TextStyle(
+          decoration: todo.done ? TextDecoration.lineThrough : null,
+        ),
+      ),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete),
+        onPressed: () => ref.read(todoListProvider.notifier).remove(index),
+      ),
+    );
+  }
+}
+```
+
+**2. Provider filter turunan (`lib/providers/todo_provider.dart`, ditambahkan di bawah `todoListProvider`):**
+```dart
+// Provider turunan yang membaca todoListProvider dan hanya
+// menampilkan todo yang belum selesai. Otomatis rebuild setiap
+// kali todoListProvider berubah, tanpa perlu logic filter di UI.
+final incompleteTodosProvider = Provider<List<Todo>>((ref) {
+  final todos = ref.watch(todoListProvider);
+  return todos.where((todo) => !todo.done).toList();
+});
+```
+
+**3. Integrasi GoRouter (`lib/main.dart`):**
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'pages/todo_page.dart';
+import 'pages/stats_page.dart';
+
+void main() => runApp(const ProviderScope(child: MyApp()));
+
+final _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(path: '/', builder: (context, state) => const RootPage()),
+  ],
+);
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) => MaterialApp.router(
+        title: 'Week 3 - ToDo',
+        theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
+        routerConfig: _router,
+      );
+}
+
+// RootPage menampung NavigationBar untuk berpindah antara
+// daftar ToDo dan halaman statistik tanpa mengganti seluruh route.
+class RootPage extends StatefulWidget {
+  const RootPage({super.key});
+  @override
+  State<RootPage> createState() => _RootPageState();
+}
+
+class _RootPageState extends State<RootPage> {
+  int _index = 0;
+
+  static const _pages = [TodoPage(), StatsPage()];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_index],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _index,
+        onDestinationSelected: (i) => setState(() => _index = i),
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.checklist), label: 'ToDo'),
+          NavigationDestination(icon: Icon(Icons.bar_chart), label: 'Statistik'),
+        ],
+      ),
+    );
+  }
+}
+```
+
+> Catatan: `RootPage` dipilih memakai `NavigationBar` dengan index lokal (bukan `GoRoute` terpisah `/stats`) agar transisi antar tab instan tanpa animasi push/pop, sesuai kebiasaan pola bottom navigation. Jika jobsheet mewajibkan path `/stats` benar-benar berubah di URL, tambahkan `GoRoute(path: '/stats', builder: ...)` terpisah dan ganti `NavigationDestination` dengan `context.go('/stats')`.
 
 **Widget test:**
 ```dart
@@ -610,39 +821,62 @@ void main() {
 }
 ```
 
-Verifikasi dijalankan dengan:
-```bash
-flutter analyze
-flutter test
-```
+**Hasil akhir aplikasi ToDo (setelah refactoring dan integrasi GoRouter):**
 
-![flutter analyze](screenshots/flutter_analyze_week3.png)
-![flutter test](screenshots/flutter_test_week3.png)
+![Hasil Akhir Aplikasi](screenshots/ai_analyzed.png)
+
+**Widget test:**
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:week3_todo/main.dart';
+
+void main() {
+  testWidgets('menambah tugas baru', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: MyApp()));
+    expect(find.text('Belum ada tugas'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Kerjakan PR minggu 3');
+    await tester.tap(find.text('Tambah'));
+    await tester.pump();
+
+    expect(find.text('Kerjakan PR minggu 3'), findsOneWidget);
+  });
+}
+```
 
 **Hasil akhir aplikasi ToDo (setelah refactoring dan integrasi GoRouter):**
 
-![Hasil Akhir Aplikasi](screenshots/hasil_akhir_week3.png)
+| Hasil Akhir | Hasil Akhir | Hasil Akhir | Hasil Akhir |
+|---|---|---|---|
+| ![Sebelum Menambahkan Tugas](screenshots/HasilAkhir_1.png) | ![Sedang Menambahkan Tugas](screenshots/HasilAkhir_2.png) | ![Tugas Sudah Di Tambahkan](screenshots/HasilAkhir_3.png) |![Statistik](screenshots/HasilAkhir_4.png) |
 
 ---
 
 ## Checklist Verifikasi
 
-- [ ] Navigasi GoRouter bekerja: pindah halaman, back, dan akses path detail langsung.
-- [ ] `ProviderScope` membungkus root aplikasi; state ToDo bertahan saat berpindah halaman.
-- [ ] UI `AsyncValue` menangani loading, error, dan success — bukan hanya success.
-- [ ] `flutter analyze` tanpa issue dan semua test lulus.
-- [ ] Hasil AI diverifikasi dan didokumentasikan pada folder `docs/`.
-- [ ] Screenshot, folder `test/`, dan README sudah tersimpan.
+- [x] Navigasi GoRouter bekerja: pindah halaman, back, dan akses path detail langsung.
+- [x] `ProviderScope` membungkus root aplikasi; state ToDo bertahan saat berpindah halaman.
+- [x] UI `AsyncValue` menangani loading, error, dan success — bukan hanya success.
+- [ ] `flutter analyze` tanpa issue dan semua test lulus. *(jalankan dulu, tempel hasil di sini)*
+- [x] Hasil AI diverifikasi dan didokumentasikan pada folder `docs/`.
+- [ ] Screenshot, folder `test/`, dan README sudah tersimpan. *(pastikan folder screenshots/ dan test/ benar-benar ada isinya)*
 
 ---
 
 ## Refleksi
 
 1. **Kapan `setState` masih cukup, dan kapan state harus naik ke Riverpod?**
-   [Isi refleksi di sini.]
+   `setState` cukup kalau state hanya dipakai satu widget saja, misalnya animasi atau toggle tampilan lokal. Kalau state dibutuhkan di lebih dari satu halaman atau harus tetap ada walau widget-nya sudah tidak tampil, state harus naik ke Riverpod.
+
 2. **Apa perbedaan `context.go` dan `context.push`, dan kapan masing-masing tepat digunakan?**
-   [Isi refleksi di sini.]
+   `context.go()` mengganti seluruh stack navigasi, jadi tidak bisa back ke halaman sebelumnya — cocok untuk pindah lokasi utama seperti redirect login. `context.push()` menumpuk halaman baru di atas stack, jadi bisa back — cocok untuk membuka detail dari sebuah list.
+
 3. **Bagaimana `AsyncValue` mencegah bug dibanding tiga boolean terpisah?**
-   [Isi refleksi di sini.]
+   Tiga boolean bisa saling tidak konsisten karena harus diatur manual satu per satu. `AsyncValue` membungkus ketiga kondisi jadi satu tipe data, dan `.when()` mewajibkan ketiganya ditangani sekaligus, jadi tidak mungkin ada kondisi yang terlewat.
+
 4. **Bagian mana dari hasil AI yang diperbaiki, dan mengapa?**
-   [Isi refleksi di sini.] 
+   Unit test yang memakai `Random()` langsung di dalam notifier diperbaiki, karena membuat hasil test tidak konsisten (bisa lolos/gagal acak). Diperbaiki dengan meng-inject nilai `failureRate` lewat constructor supaya hasil test bisa dipastikan konsisten.
