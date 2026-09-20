@@ -589,12 +589,12 @@ class InfoCard extends StatelessWidget {
 
 ## Checklist Verifikasi
 
-- [ ] `flutter analyze` tidak menghasilkan error.
-- [ ] `flutter test` lulus semua widget test responsif.
-- [ ] Aplikasi dapat dijalankan pada ukuran layar sempit dan lebar.
-- [ ] Dark mode memiliki kontras dan teks yang terbaca.
-- [ ] Struktur widget dapat dijelaskan saat code review.
-- [ ] Screenshot, folder `test/`, dan README sudah tersimpan.
+- [X] `flutter analyze` tidak menghasilkan error.
+- [X] `flutter test` lulus semua widget test responsif.
+- [X] Aplikasi dapat dijalankan pada ukuran layar sempit dan lebar.
+- [X] Dark mode memiliki kontras dan teks yang terbaca.
+- [X] Struktur widget dapat dijelaskan saat code review.
+- [X] Screenshot, folder `test/`, dan README sudah tersimpan.
 
 ---
 
