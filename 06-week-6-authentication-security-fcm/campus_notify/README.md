@@ -2,11 +2,9 @@
 
 ## Praktikum Week 6 - Authentication, Security & Firebase Cloud Messaging (FCM)
 
----
 
 ## Identitas
 
-## Identitas
 
 | Field    | Detail               |
 |----------|-----------------------|
@@ -421,7 +419,7 @@ GoRouter(
 | ------------------------------------------ | ---------------------------------------- | ---------------------------------------------------- |
 | ![Login](screenshots/Praktikum1_Login.jpg) | ![Home](screenshots/Praktikum1_Home.jpg) | ![Pengumuman](screenshots/Praktikum1_Pengumuman.jpg) |
 
-> Screenshot dapat diganti dengan hasil implementasi aktual dari project.
+
 
 ---
 
@@ -622,9 +620,9 @@ Notifikasi diuji ketika aplikasi berada dalam kondisi background.
 
 ## Hasil Praktikum 2
 
-| Permission                                           | FCM Token                                      | Firebase Console                                 | Notifikasi                                               |
-| ---------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
-| ![Permission](screenshots/NotifPK2.jpg) | ![FCM Token](screenshots/IsiKumbangPK2.jpg) |
+| Permission                                           | FCM Token                                                                         |
+| ---------------------------------------------------- | ---------------------------------------------- | 
+| ![Permission](screenshots/NotifPK2.jpg)              | ![FCM Token](screenshots/IsiKumbangPK2.jpg)    |
 
 ---
 
@@ -769,21 +767,11 @@ Future<void> handleTerminated(
 
 ---
 
-# Matriks Pengujian Tiga App State
-
-Pengujian dilakukan menggunakan payload yang sama untuk memastikan deep link bekerja pada semua kondisi aplikasi.
-
-| State          | Yang Diharapkan                                        | Cara Uji                                      | Hasil    |
-| -------------- | ------------------------------------------------------ | --------------------------------------------- | -------- |
-| **Foreground** | Banner lokal muncul dan klik masuk ke `/pengumuman/3`  | Buka aplikasi, kirim notifikasi               | Berhasil |
-| **Background** | Banner sistem muncul dan klik masuk ke rute yang benar | Tekan Home, kirim notifikasi, klik banner     | Berhasil |
-| **Terminated** | Aplikasi terbuka ke rute yang benar                    | Tutup aplikasi, kirim notifikasi, klik banner | Berhasil |
-
 ### Bukti Pengujian
 
-| Foreground                                | Background                                | Terminated                                |
-| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| ![Subscribe](screenshots/SubPK3.jpg) | ![UnSubscribe](screenshots/UnSubPK3.jpg) |
+| FCM                                       | FCM                                       | 
+| ----------------------------------------- | ----------------------------------------- |
+| ![Subscribe](screenshots/SubPK3.jpg)      | ![UnSubscribe](screenshots/UnSubPK3.jpg)  |
 
 ---
 
@@ -1241,16 +1229,3 @@ Draf AI tidak langsung digunakan tanpa pengujian. Bagian yang berkaitan dengan b
 Perbaikan dilakukan apabila implementasi AI tidak sesuai dengan lifecycle Firebase Messaging atau berpotensi menimbulkan masalah keamanan seperti hardcode token, logging token penuh, atau navigasi yang tidak berjalan pada kondisi terminated.
 
 ---
-
-## Checklist Akhir
-
-* [x] Praktikum 1 selesai.
-* [x] Praktikum 2 selesai.
-* [x] Praktikum 3 selesai.
-* [x] AI Challenge selesai.
-* [x] Refactoring selesai.
-* [x] Unit testing selesai.
-* [x] Error umum didokumentasikan.
-* [x] Screenshot hasil praktikum disiapkan.
-* [x] README dibuat.
-* [x] Project siap di-push ke GitHub.
