@@ -27,7 +27,7 @@ Mata kuliah Pembelajaran Pemrograman Mobile) selama JobSheet 1-16.
 | 3 | Jobsheet 3 | Navigation & State Management | ✅ |
 | 4 | Jobsheet 4 | Networking & REST API | ✅ |
 | 5 | Jobsheet 5 | Local Storage & Offline First | ✅ |
-| 6 | Jobsheet 6 | ... |  |
+| 6 | Jobsheet 6 | Authentication, Security & FCM | ✅ |
 | 7 | Jobsheet 7 | ... |  |
 | 8 | Jobsheet 8 | ... |  |
 | 9 | Jobsheet 9 | ... |  |
