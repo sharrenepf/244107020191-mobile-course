@@ -13,9 +13,9 @@
 | **Nama** | *Sharren Elvaretta Pratamadya Fianto* |
 | **NIM**  | *244107020191* |
 | **Kelas** | *TI 3G* |
-| **Praktikum 1** | week6_offline_notes (SharedPreferences) |
-| **Praktikum 2** | week6_offline_notes (SQLite & Repository Catatan) |
-| **Praktikum 3** | week6_offline_notes (Cache-first & Antrean Sync) |
+| **Praktikum 1: Login + secure storage + token refresh** | campus_notify |
+| **Praktikum 2: FCM, permission, dan token lifecycle** | campus_notify|
+| **Praktikum 3: Payload, tiga app state, klik dan topik** | campus_notify |
 | **Tugas Praktikum** | Pertemuan 6 |
 
 
@@ -624,7 +624,7 @@ Notifikasi diuji ketika aplikasi berada dalam kondisi background.
 
 | Permission                                           | FCM Token                                      | Firebase Console                                 | Notifikasi                                               |
 | ---------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
-| ![Permission](screenshots/Praktikum2_Permission.png) | ![FCM Token](screenshots/Praktikum2_Token.png) | ![Firebase](screenshots/Praktikum2_Firebase.png) | ![Notification](screenshots/Praktikum2_Notification.png) |
+| ![Permission](screenshots/NotifPK2.jpg) | ![FCM Token](screenshots/IsiKumbangPK2.jpg) |
 
 ---
 
@@ -783,7 +783,7 @@ Pengujian dilakukan menggunakan payload yang sama untuk memastikan deep link bek
 
 | Foreground                                | Background                                | Terminated                                |
 | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| ![Foreground](screenshots/Foreground.png) | ![Background](screenshots/Background.png) | ![Terminated](screenshots/Terminated.png) |
+| ![Subscribe](screenshots/SubPK3.jpg) | ![UnSubscribe](screenshots/UnSubPK3.jpg) |
 
 ---
 
@@ -1126,15 +1126,11 @@ Fitur utama:
 
 | Login                                 | Home                                | Pengumuman                                      |
 | ------------------------------------- | ----------------------------------- | ----------------------------------------------- |
-| ![Login](screenshots/Tugas_Login.png) | ![Home](screenshots/Tugas_Home.png) | ![Pengumuman](screenshots/Tugas_Pengumuman.png) |
+| ![Login](screenshots/ClosePW_tugas.jpg) | ![Login](screenshots/OpenPW_tugas.jpg) | ![Pengumuman](screenshots/IsiPengumuman_tugas.jpg) |
 
 | FCM Permission                                  | FCM Token                             | Notification                                        |
 | ----------------------------------------------- | ------------------------------------- | --------------------------------------------------- |
-| ![Permission](screenshots/Tugas_Permission.png) | ![Token](screenshots/Tugas_Token.png) | ![Notification](screenshots/Tugas_Notification.png) |
-
-| Foreground                                      | Background                                      | Terminated                                      |
-| ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- |
-| ![Foreground](screenshots/Tugas_Foreground.png) | ![Background](screenshots/Tugas_Background.png) | ![Terminated](screenshots/Tugas_Terminated.png) |
+| ![Pengumuman](screenshots/IsiPengumuman_tugas.jpg) | ![FCM Subscribe](screenshots/Sub_tugas.jpg) | ![FCM UnSubscribe](screenshots/UnSub_Tugas.jpg) |
 
 ---
 
@@ -1243,19 +1239,6 @@ Pesan personal tidak sebaiknya dikirim menggunakan topic karena topic ditujukan 
 Draf AI tidak langsung digunakan tanpa pengujian. Bagian yang berkaitan dengan background handler, `onTokenRefresh`, foreground notification, deep link, serta authentication lifecycle diverifikasi kembali secara manual.
 
 Perbaikan dilakukan apabila implementasi AI tidak sesuai dengan lifecycle Firebase Messaging atau berpotensi menimbulkan masalah keamanan seperti hardcode token, logging token penuh, atau navigasi yang tidak berjalan pada kondisi terminated.
-
----
-
-# Referensi
-
-* Flutter Codelab — Week 6 Authentication, Security & FCM.
-* Firebase Cloud Messaging.
-* Flutter `firebase_messaging`.
-* Flutter `flutter_local_notifications`.
-* Flutter `flutter_secure_storage`.
-* Flutter `go_router`.
-* Flutter Riverpod.
-* Dio HTTP Client.
 
 ---
 

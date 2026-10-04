@@ -1,10 +1,19 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/api_client.dart';
 import '../data/auth_repository.dart';
 import '../data/token_store.dart';
 
 final tokenStoreProvider = Provider<TokenStore>((ref) => TokenStore());
 final authRepositoryProvider =
     Provider<AuthRepository>((ref) => AuthRepository());
+
+final dioProvider = Provider<Dio>((ref) {
+  return buildApiClient(
+    ref.read(tokenStoreProvider),
+    ref.read(authRepositoryProvider),
+  );
+});
 
 final authStateProvider =
     AsyncNotifierProvider<AuthNotifier, bool>(AuthNotifier.new);
