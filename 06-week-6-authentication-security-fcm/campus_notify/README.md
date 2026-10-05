@@ -1085,31 +1085,6 @@ All tests passed.
 
 # Tugas Praktikum / Mini Project
 
-## Campus Notification App
-
-Mini project pada Week 6 dikembangkan menjadi aplikasi **Campus Notification App** dengan fitur authentication, secure storage, token refresh, dan Firebase Cloud Messaging.
-
-Fitur utama:
-
-* Login menggunakan mock authentication atau Firebase Auth.
-* Route guard untuk halaman yang membutuhkan authentication.
-* Access token dan refresh token disimpan menggunakan secure storage.
-* Dio melakukan automatic token refresh ketika mendapatkan `401`.
-* Sesi dihapus apabila refresh token sudah tidak valid.
-* Firebase Cloud Messaging terintegrasi.
-* Permission notification.
-* Pengambilan FCM token.
-* `onTokenRefresh`.
-* Pengiriman token ke endpoint backend `/devices`.
-* Subscription topic `pengumuman-kampus`.
-* Notification payload menggunakan kombinasi `notification` dan `data`.
-* Deep link menuju `/pengumuman/:id`.
-* Pengujian foreground, background, dan terminated.
-* Unit testing untuk parsing route dan authentication logic.
-* Dokumentasi AI Challenge.
-
----
-
 ## Screenshot Hasil Tugas
 
 | Login                                 | Home                                | Pengumuman                                      |
