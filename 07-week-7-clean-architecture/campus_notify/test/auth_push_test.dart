@@ -1,12 +1,16 @@
 import 'dart:typed_data';
 
-import 'package:campus_notify/data/api_client.dart';
-import 'package:campus_notify/data/api_errors.dart';
-import 'package:campus_notify/data/auth_repository.dart';
-import 'package:campus_notify/data/token_store.dart';
-import 'package:campus_notify/messaging/route_parser.dart';
-import 'package:campus_notify/providers/auth_provider.dart';
+import 'package:campus_notify/core/failures.dart';
+import 'package:campus_notify/core/format.dart';
+import 'package:campus_notify/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:campus_notify/features/auth/domain/entities/auth_session.dart';
+import 'package:campus_notify/features/auth/domain/repositories/auth_repository.dart';
+import 'package:campus_notify/features/auth/presentation/providers/auth_providers.dart';
 import 'package:campus_notify/routes.dart';
+import 'package:campus_notify/shared/data/api_client.dart';
+import 'package:campus_notify/shared/data/api_errors.dart';
+import 'package:campus_notify/shared/data/token_store.dart';
+import 'package:campus_notify/shared/providers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,10 +65,24 @@ class _Adapter implements HttpClientAdapter {
 }
 
 /// Repository yang refresh-nya selalu gagal.
-class _DeadAuth extends AuthRepository {
+class _DeadAuth implements AuthRepository {
   @override
-  Future<String> refresh(String refreshToken) async =>
-      throw Exception('refresh mati');
+  Future<({String? access, Failure? failure})> refresh(
+      String refreshToken) async {
+    return (access: null, failure: const AuthFailure('refresh mati'));
+  }
+
+  @override
+  Future<({AuthSession? session, Failure? failure})> login(
+      {required String email, required String password}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> hasSession() async => false;
+
+  @override
+  Future<void> logout() async {}
 }
 
 void main() {
@@ -118,7 +136,8 @@ void main() {
       ..access = 'old'
       ..refresh = 'r1';
     final adapter = _Adapter();
-    final dio = buildApiClient(store, AuthRepository());
+    final auth = AuthRepositoryImpl(store);
+    final dio = buildApiClient(store, auth);
     dio.httpClientAdapter = adapter;
 
     final res = await dio.get('/profil');

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/api_errors.dart';
-import '../providers/auth_provider.dart';
+
+import '../../../../core/format.dart';
+import '../providers/auth_providers.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -124,7 +125,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      friendlyError(auth.error!),
+                                      // errorMessage dari core/format.dart
+                                      errorMessage(auth.error!),
                                       style: TextStyle(
                                           color: Colors.red.shade700),
                                     ),

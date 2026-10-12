@@ -1,27 +1,16 @@
-class Announcement {
-  const Announcement({
-    required this.id,
-    required this.title,
-    required this.body,
-    required this.category,
-    required this.date,
-  });
+import '../../domain/entities/announcement.dart';
 
-  final String id;
-  final String title;
-  final String body;
-  final String category;
-  final String date;
-}
-
-const List<Announcement> kAnnouncements = [
+/// Data mock pengumuman kampus.
+/// Repository impl mengambil data dari sini.
+/// Ganti seluruh isi list ini (atau ganti datasource ke Dio) saat backend siap.
+final List<Announcement> kAnnouncements = [
   Announcement(
     id: '1',
     title: 'Libur Nasional',
     body: 'Perkuliahan diliburkan pada hari Jumat. Kegiatan belajar '
         'mengajar dilanjutkan kembali pada hari Senin sesuai jadwal.',
     category: 'Umum',
-    date: '2 Okt 2026',
+    publishedAt: DateTime(2026, 10, 2),
   ),
   Announcement(
     id: '2',
@@ -29,7 +18,7 @@ const List<Announcement> kAnnouncements = [
     body: 'UTS dimulai Senin depan. Cek jadwal dan ruang ujian di SIAKAD. '
         'Mahasiswa wajib membawa kartu mahasiswa.',
     category: 'Akademik',
-    date: '3 Okt 2026',
+    publishedAt: DateTime(2026, 10, 3),
   ),
   Announcement(
     id: '3',
@@ -37,7 +26,7 @@ const List<Announcement> kAnnouncements = [
     body: 'Kelas Mobile pindah ke Ruang A2 jam 13.00. '
         'Harap semua mahasiswa memperhatikan perubahan ini.',
     category: 'Akademik',
-    date: '4 Okt 2026',
+    publishedAt: DateTime(2026, 10, 4),
   ),
   Announcement(
     id: '4',
@@ -45,7 +34,7 @@ const List<Announcement> kAnnouncements = [
     body: 'Pendaftaran anggota baru UKM Fotografi dibuka sampai akhir '
         'bulan. Daftar melalui sekretariat UKM.',
     category: 'Kegiatan',
-    date: '4 Okt 2026',
+    publishedAt: DateTime(2026, 10, 4),
   ),
   Announcement(
     id: '5',
@@ -53,13 +42,6 @@ const List<Announcement> kAnnouncements = [
     body: 'Seminar karier bersama alumni diadakan Sabtu pukul 09.00 '
         'di Aula Utama. Terbuka untuk semua mahasiswa.',
     category: 'Kegiatan',
-    date: '5 Okt 2026',
+    publishedAt: DateTime(2026, 10, 5),
   ),
 ];
-
-Announcement? findAnnouncement(String id) {
-  for (final a in kAnnouncements) {
-    if (a.id == id) return a;
-  }
-  return null;
-}

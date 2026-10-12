@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../data/announcements.dart';
-import '../providers/auth_provider.dart';
-import '../routes.dart';
-import '../theme.dart';
+
+import '../../../../core/format.dart';
+import '../../../../routes.dart';
+import '../../../../theme.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
+import '../providers/announcement_providers.dart';
+import '../../domain/entities/announcement.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -15,14 +18,12 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   static const _categories = ['Semua', 'Akademik', 'Kegiatan', 'Umum'];
-  String _selected = 'Semua';
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final items = kAnnouncements
-        .where((a) => _selected == 'Semua' || a.category == _selected)
-        .toList();
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final announcementsAsync = ref.watch(filteredAnnouncementsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -85,18 +86,48 @@ class _HomePageState extends ConsumerState<HomePage> {
               for (final c in _categories)
                 ChoiceChip(
                   label: Text(c),
-                  selected: _selected == c,
-                  onSelected: (_) => setState(() => _selected = c),
+                  selected: selectedCategory == c,
+                  onSelected: (_) =>
+                      ref.read(selectedCategoryProvider.notifier).select(c),
                 ),
             ],
           ),
           const SizedBox(height: 12),
-          if (items.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(32),
-              child: Center(child: Text('Belum ada pengumuman.')),
+          announcementsAsync.when(
+            loading: () => const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: CircularProgressIndicator(),
+              ),
             ),
-          for (final a in items) _AnnouncementCard(item: a),
+            error: (e, _) => Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  children: [
+                    const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                    const SizedBox(height: 8),
+                    Text(errorMessage(e),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.red)),
+                    const SizedBox(height: 12),
+                    FilledButton(
+                      onPressed: () => ref.invalidate(filteredAnnouncementsProvider),
+                      child: const Text('Coba lagi'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            data: (items) => items.isEmpty
+                ? const Padding(
+                    padding: EdgeInsets.all(32),
+                    child: Center(child: Text('Belum ada pengumuman.')),
+                  )
+                : Column(
+                    children: [for (final a in items) _AnnouncementCard(item: a)],
+                  ),
+          ),
         ],
       ),
     );
@@ -159,8 +190,9 @@ class _AnnouncementCard extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                         const Spacer(),
+                        // formatDate dari core/format.dart — murni Dart
                         Text(
-                          item.date,
+                          formatDate(item.publishedAt),
                           style: TextStyle(
                               color: Colors.grey.shade600, fontSize: 12),
                         ),
