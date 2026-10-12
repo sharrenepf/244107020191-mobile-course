@@ -28,7 +28,7 @@ Mata kuliah Pembelajaran Pemrograman Mobile) selama JobSheet 1-16.
 | 4 | Jobsheet 4 | Networking & REST API | ✅ |
 | 5 | Jobsheet 5 | Local Storage & Offline First | ✅ |
 | 6 | Jobsheet 6 | Authentication, Security & FCM | ✅ |
-| 7 | Jobsheet 7 | ... |  |
+| 7 | Jobsheet 7 | Clean Architecture | ✅ |
 | 8 | Jobsheet 8 | ... |  |
 | 9 | Jobsheet 9 | ... |  |
 | 10 | Jobsheet 10 | ... |  |
