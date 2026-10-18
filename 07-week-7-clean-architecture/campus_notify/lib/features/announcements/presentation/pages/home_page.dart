@@ -105,14 +105,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                 padding: const EdgeInsets.all(32),
                 child: Column(
                   children: [
-                    const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 48,
+                    ),
                     const SizedBox(height: 8),
-                    Text(errorMessage(e),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.red)),
+                    Text(
+                      errorMessage(e),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red),
+                    ),
                     const SizedBox(height: 12),
                     FilledButton(
-                      onPressed: () => ref.invalidate(filteredAnnouncementsProvider),
+                      onPressed: () =>
+                          ref.invalidate(filteredAnnouncementsProvider),
                       child: const Text('Coba lagi'),
                     ),
                   ],
@@ -125,7 +132,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Center(child: Text('Belum ada pengumuman.')),
                   )
                 : Column(
-                    children: [for (final a in items) _AnnouncementCard(item: a)],
+                    children: [
+                      for (final a in items) _AnnouncementCard(item: a),
+                    ],
                   ),
           ),
         ],
@@ -170,7 +179,9 @@ class _AnnouncementCard extends StatelessWidget {
                     Text(
                       item.title,
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -185,16 +196,19 @@ class _AnnouncementCard extends StatelessWidget {
                         Text(
                           item.category,
                           style: TextStyle(
-                              color: color,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600),
+                            color: color,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         const Spacer(),
                         // formatDate dari core/format.dart — murni Dart
                         Text(
                           formatDate(item.publishedAt),
                           style: TextStyle(
-                              color: Colors.grey.shade600, fontSize: 12),
+                            color: Colors.grey.shade600,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),

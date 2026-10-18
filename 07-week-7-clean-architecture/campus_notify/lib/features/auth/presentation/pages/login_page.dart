@@ -46,8 +46,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   const CircleAvatar(
                     radius: 36,
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.notifications_active,
-                        size: 36, color: Color(0xFF0F766E)),
+                    child: Icon(
+                      Icons.notifications_active,
+                      size: 36,
+                      color: Color(0xFF0F766E),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -77,7 +80,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const Text(
                             'Masuk',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           const SizedBox(height: 16),
                           TextField(
@@ -99,11 +104,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               labelText: 'Kata sandi',
                               prefixIcon: const Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
-                                icon: Icon(_hidePassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
+                                icon: Icon(
+                                  _hidePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
                                 onPressed: () => setState(
-                                    () => _hidePassword = !_hidePassword),
+                                  () => _hidePassword = !_hidePassword,
+                                ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -120,15 +128,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.error_outline,
-                                      color: Colors.red.shade700, size: 20),
+                                  Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red.shade700,
+                                    size: 20,
+                                  ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       // errorMessage dari core/format.dart
                                       errorMessage(auth.error!),
                                       style: TextStyle(
-                                          color: Colors.red.shade700),
+                                        color: Colors.red.shade700,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -142,15 +154,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               onPressed: auth.isLoading
                                   ? null
                                   : () => ref
-                                      .read(authStateProvider.notifier)
-                                      .login(
-                                          _email.text.trim(), _password.text),
+                                        .read(authStateProvider.notifier)
+                                        .login(
+                                          _email.text.trim(),
+                                          _password.text,
+                                        ),
                               child: auth.isLoading
                                   ? const SizedBox(
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator(
-                                          strokeWidth: 2),
+                                        strokeWidth: 2,
+                                      ),
                                     )
                                   : const Text('Masuk'),
                             ),

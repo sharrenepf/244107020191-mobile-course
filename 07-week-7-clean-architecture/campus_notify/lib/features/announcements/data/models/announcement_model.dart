@@ -18,19 +18,20 @@ class AnnouncementModel extends Announcement {
       title: json['title'] as String? ?? '',
       body: json['body'] as String? ?? '',
       category: json['category'] as String? ?? 'Umum',
-      publishedAt: DateTime.tryParse(json['published_at'] as String? ?? '') ??
+      publishedAt:
+          DateTime.tryParse(json['published_at'] as String? ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
     );
   }
 
   /// Konversi ke entity murni (batas data → domain).
   Announcement toEntity() => Announcement(
-        id: id,
-        title: title,
-        body: body,
-        category: category,
-        publishedAt: publishedAt,
-      );
+    id: id,
+    title: title,
+    body: body,
+    category: category,
+    publishedAt: publishedAt,
+  );
 
   /// Tanggal yang diformat untuk UI (pakai formatDate dari core).
   String get formattedDate => formatDate(publishedAt);
