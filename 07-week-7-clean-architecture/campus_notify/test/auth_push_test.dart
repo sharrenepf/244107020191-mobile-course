@@ -51,13 +51,21 @@ class _Adapter implements HttpClientAdapter {
   ) async {
     calls++;
     if (options.headers['Authorization'] == 'Bearer old') {
-      return ResponseBody.fromString('{}', 401, headers: {
-        Headers.contentTypeHeader: ['application/json'],
-      });
+      return ResponseBody.fromString(
+        '{}',
+        401,
+        headers: {
+          Headers.contentTypeHeader: ['application/json'],
+        },
+      );
     }
-    return ResponseBody.fromString('{"ok":true}', 200, headers: {
-      Headers.contentTypeHeader: ['application/json'],
-    });
+    return ResponseBody.fromString(
+      '{"ok":true}',
+      200,
+      headers: {
+        Headers.contentTypeHeader: ['application/json'],
+      },
+    );
   }
 
   @override
@@ -68,13 +76,16 @@ class _Adapter implements HttpClientAdapter {
 class _DeadAuth implements AuthRepository {
   @override
   Future<({String? access, Failure? failure})> refresh(
-      String refreshToken) async {
+    String refreshToken,
+  ) async {
     return (access: null, failure: const AuthFailure('refresh mati'));
   }
 
   @override
-  Future<({AuthSession? session, Failure? failure})> login(
-      {required String email, required String password}) {
+  Future<({AuthSession? session, Failure? failure})> login({
+    required String email,
+    required String password,
+  }) {
     throw UnimplementedError();
   }
 
@@ -107,9 +118,7 @@ void main() {
 
     expect(await container.read(authStateProvider.future), isFalse);
 
-    await container
-        .read(authStateProvider.notifier)
-        .login('a@b.com', '123456');
+    await container.read(authStateProvider.notifier).login('a@b.com', '123456');
     expect(container.read(authStateProvider).value, isTrue);
     expect(store.access, isNotNull);
 
