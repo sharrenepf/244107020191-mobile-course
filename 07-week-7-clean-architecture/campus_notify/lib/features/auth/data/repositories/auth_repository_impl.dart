@@ -24,15 +24,14 @@ class AuthRepositoryImpl implements AuthRepository {
       await _store.save(access: session.access, refresh: session.refresh);
       return (session: session, failure: null);
     } catch (e) {
-      return (
-        session: null,
-        failure: AuthFailure('Gagal login: $e'),
-      );
+      return (session: null, failure: AuthFailure('Gagal login: $e'));
     }
   }
 
   @override
-  Future<({String? access, Failure? failure})> refresh(String refreshToken) async {
+  Future<({String? access, Failure? failure})> refresh(
+    String refreshToken,
+  ) async {
     await Future.delayed(const Duration(milliseconds: 300));
     if (refreshToken.isEmpty) {
       return (access: null, failure: const AuthFailure('Refresh token hilang'));

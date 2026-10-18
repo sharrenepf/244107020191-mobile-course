@@ -9,8 +9,9 @@ final loginProvider = Provider<Login>(
 );
 
 /// State autentikasi global — true bila ada access token tersimpan.
-final authStateProvider =
-    AsyncNotifierProvider<AuthNotifier, bool>(AuthNotifier.new);
+final authStateProvider = AsyncNotifierProvider<AuthNotifier, bool>(
+  AuthNotifier.new,
+);
 
 class AuthNotifier extends AsyncNotifier<bool> {
   @override

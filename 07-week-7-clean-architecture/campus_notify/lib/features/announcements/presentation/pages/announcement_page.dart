@@ -34,8 +34,7 @@ class AnnouncementPage extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, color: Colors.red, size: 48),
               const SizedBox(height: 8),
-              Text(errorMessage(e),
-                  style: const TextStyle(color: Colors.red)),
+              Text(errorMessage(e), style: const TextStyle(color: Colors.red)),
               const SizedBox(height: 12),
               FilledButton(
                 onPressed: () => ref.invalidate(announcementDetailProvider(id)),
@@ -70,13 +69,17 @@ class AnnouncementPage extends ConsumerWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(Icons.calendar_today,
-                                size: 14, color: Colors.white70),
+                            const Icon(
+                              Icons.calendar_today,
+                              size: 14,
+                              color: Colors.white70,
+                            ),
                             const SizedBox(width: 6),
                             // formatDate dari core/format.dart — murni Dart
-                            Text(formatDate(item.publishedAt),
-                                style:
-                                    const TextStyle(color: Colors.white70)),
+                            Text(
+                              formatDate(item.publishedAt),
+                              style: const TextStyle(color: Colors.white70),
+                            ),
                           ],
                         ),
                       ],

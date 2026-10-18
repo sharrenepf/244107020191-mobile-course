@@ -29,11 +29,13 @@ class CategoryNotifier extends Notifier<String> {
   void select(String value) => state = value;
 }
 
-final selectedCategoryProvider =
-    NotifierProvider<CategoryNotifier, String>(CategoryNotifier.new);
+final selectedCategoryProvider = NotifierProvider<CategoryNotifier, String>(
+  CategoryNotifier.new,
+);
 
-final filteredAnnouncementsProvider =
-    FutureProvider<List<Announcement>>((ref) async {
+final filteredAnnouncementsProvider = FutureProvider<List<Announcement>>((
+  ref,
+) async {
   final category = ref.watch(selectedCategoryProvider);
   final r = await ref.watch(getAnnouncementsProvider).call(category: category);
   if (r.failure != null) throw Exception(r.failure!.message);
@@ -43,10 +45,10 @@ final filteredAnnouncementsProvider =
 /// Detail pengumuman — langsung repository tanpa use case.
 /// Keputusan: satu baris, tanpa aturan bisnis → use case over-engineering.
 /// (ref: AI Challenge docs/ai-decision-table.md)
-final announcementDetailProvider =
-    FutureProvider.family<Announcement?, String>((ref, id) async {
-  final r =
-      await ref.watch(announcementRepositoryProvider).fetchById(id);
-  if (r.failure != null) throw Exception(r.failure!.message);
-  return r.item;
-});
+final announcementDetailProvider = FutureProvider.family<Announcement?, String>(
+  (ref, id) async {
+    final r = await ref.watch(announcementRepositoryProvider).fetchById(id);
+    if (r.failure != null) throw Exception(r.failure!.message);
+    return r.item;
+  },
+);

@@ -15,7 +15,7 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
   @override
   Future<({List<Announcement> items, Failure? failure})>
-      fetchAnnouncements() async {
+  fetchAnnouncements() async {
     try {
       // Simulasi delay jaringan kecil.
       await Future.delayed(const Duration(milliseconds: 200));
