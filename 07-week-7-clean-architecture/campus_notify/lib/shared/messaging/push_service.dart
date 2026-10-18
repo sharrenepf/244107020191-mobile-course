@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import '../../core/format.dart';
 import '../data/api_errors.dart';
 
@@ -60,7 +61,8 @@ Future<void> initLocalNotifications() async {
   );
   await _local
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin
+      >()
       ?.createNotificationChannel(channel);
 }
 
@@ -128,17 +130,21 @@ Future<void> startPush(Dio dio, void Function(String route) go) async {
     await initLocalNotifications();
     listenForeground(go);
 
-    await initFcmToken(onToken: (token) async {
-      fcmToken.value = token;
-      try {
-        await dio.post('/devices',
-            data: {'fcm_token': token, 'platform': 'android'});
-        syncStatus.value = 'Terkirim ke backend: ${shortToken(token)}';
-      } catch (e) {
-        syncStatus.value =
-            'Gagal kirim (${friendlyError(e)}): ${shortToken(token)}';
-      }
-    });
+    await initFcmToken(
+      onToken: (token) async {
+        fcmToken.value = token;
+        try {
+          await dio.post(
+            '/devices',
+            data: {'fcm_token': token, 'platform': 'android'},
+          );
+          syncStatus.value = 'Terkirim ke backend: ${shortToken(token)}';
+        } catch (e) {
+          syncStatus.value =
+              'Gagal kirim (${friendlyError(e)}): ${shortToken(token)}';
+        }
+      },
+    );
 
     await handleTerminated(go);
   } catch (e) {
