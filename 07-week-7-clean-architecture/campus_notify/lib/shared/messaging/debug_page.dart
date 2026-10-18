@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../messaging/push_service.dart';
 
 class DebugPage extends StatelessWidget {
@@ -30,11 +31,14 @@ class DebugPage extends StatelessWidget {
             builder: (_, t, _) => Card(
               child: ListTile(
                 leading: const Icon(Icons.vpn_key),
-                title: const Text('FCM token (dipotong)',
-                    style: TextStyle(fontSize: 13)),
-                subtitle: Text(t == null ? '-' : shortToken(t),
-                    style: const TextStyle(
-                        fontSize: 16, fontFamily: 'monospace')),
+                title: const Text(
+                  'FCM token (dipotong)',
+                  style: TextStyle(fontSize: 13),
+                ),
+                subtitle: Text(
+                  t == null ? '-' : shortToken(t),
+                  style: const TextStyle(fontSize: 16, fontFamily: 'monospace'),
+                ),
               ),
             ),
           ),
@@ -42,18 +46,23 @@ class DebugPage extends StatelessWidget {
           _tile(Icons.tag, 'Topik', topicStatus),
           _tile(Icons.mark_email_unread, 'Notifikasi terakhir', lastNotif),
           const SizedBox(height: 8),
-          Row(children: [
-            Expanded(
-              child: FilledButton(
-                  onPressed: subscribeTopic, child: const Text('Subscribe')),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: OutlinedButton(
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton(
+                  onPressed: subscribeTopic,
+                  child: const Text('Subscribe'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton(
                   onPressed: unsubscribeTopic,
-                  child: const Text('Unsubscribe')),
-            ),
-          ]),
+                  child: const Text('Unsubscribe'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
