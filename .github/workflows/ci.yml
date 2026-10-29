@@ -1,0 +1,34 @@
+name: Flutter CI
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  analyze_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        working-directory: 08-week-8-mid-project-review/campus_notify
+        run: flutter pub get
+
+      - name: Analyze code
+        working-directory: 08-week-8-mid-project-review/campus_notify
+        run: flutter analyze
+
+      - name: Run unit tests
+        working-directory: 08-week-8-mid-project-review/campus_notify
+        run: flutter test
+
