@@ -425,7 +425,7 @@ flutter test
 
 Bukti Pull Req:
 
-![GitHub Actions CI](screenshots/ci.png)
+![GitHub](screenshots/Pull_ReqJS8.png)
 
 ---
 
