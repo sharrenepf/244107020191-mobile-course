@@ -29,7 +29,7 @@ Mata kuliah Pembelajaran Pemrograman Mobile) selama JobSheet 1-16.
 | 5 | Jobsheet 5 | Local Storage & Offline First | ✅ |
 | 6 | Jobsheet 6 | Authentication, Security & FCM | ✅ |
 | 7 | Jobsheet 7 | Clean Architecture | ✅ |
-| 8 | Jobsheet 8 | ... |  |
+| 8 | Jobsheet 8 | Mid Project Review |  |
 | 9 | Jobsheet 9 | ... |  |
 | 10 | Jobsheet 10 | ... |  |
 | 11 | Jobsheet 11 | ... |  |
