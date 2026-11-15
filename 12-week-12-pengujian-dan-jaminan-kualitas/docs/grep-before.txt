@@ -1,0 +1,15 @@
+### Grep 1: widget menyentuh jaringan/database
+(tidak ada hasil - lib/pages kosong, tidak ada halaman yang memanggil Dio/openDatabase/SecureStorage langsung)
+
+### Grep 2: logika bisnis di build()
+(tidak ada hasil - tidak ada DateFormat/jsonDecode/toIso8601String di halaman)
+
+### Grep 3: instansiasi manual (DI bocor)
+lib/providers/auth_provider.dart:9:    Provider<AuthRepository>((ref) => AuthRepository());
+
+---
+Ringkasan:
+- Grep 1 & 2: kosong → pelanggaran DI di widget nol
+- Grep 3: 1 temuan → auth_provider.dart:9 membuat AuthRepository() konkret langsung
+- Pelanggaran utama ada di STRUKTUR: interface + implementasi satu kelas (data/auth_repository.dart), 
+  provider memanggil kelas konkret AuthRepository(), error masih Exception mentah bukan Failure
